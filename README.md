@@ -2,9 +2,9 @@
 
 A Python script to export data from [pass](https://www.passwordstore.org/) in [Bitwarden](https://bitwarden.com/) CSV format. This started as a quick and dirty script to move my passwords to Bitwarden, but it turned out worthy of being shared.
 
-Inspired by [reinefjord/pass2csv](https://github.com/reinefjord/pass2csv), but rewritten from scratch. There's probably some similarities.
+This is a fork from [quulah/pass2bitwarden](https://github.com/quulah/pass2bitwarden) project's. Just added some minor changes
 
-Like pass2csv, this script needs [python-gnupg](https://pypi.org/project/python-gnupg/) and Python 3.
+Like pass2bitwarden, this script needs [python-gnupg](https://pypi.org/project/python-gnupg/) and Python 3.
 
 ## Config
 
@@ -12,9 +12,16 @@ Currently, the parsed fields and any resulting formatting with regexp group matc
 
 By default the script exports data in the [Bitwarden Generic CSV Individual Account](https://help.bitwarden.com/article/import-data/#generic-csv-format-individual-account) format.
 
-The GPG encrypted password store data is decrypted and processed. As an example: `login_password` is grabbed from the first line of the data, `login_uri` is matched with `^url ?: ?(.*)$` and the `type` is always `login`. Check out the `defaults.py` file if you have any other requirements and create the `config.py` file.
+The GPG encrypted password store data is decrypted and processed. As an example: `login_password` is grabbed from the first line of the data, `login_username` is grabbed from the second line of the data, `login_uri` is matched with `^url ?: ?(.*)$` and the `type` is always `login`. Check out the `defaults.py` file if you have any other requirements and create the `config.py` file.
 
 Most likely, the `fields` and `notes` parsing could be implemented in some nice way by default. Feel free to create pull requests.
+
+
+## Activate environment
+
+```
+pipenv shell && pipenv install
+```
 
 ## Usage
 
@@ -39,5 +46,10 @@ optional arguments:
 Example:
 
 ```
-$ ./pass2bw.py -d ~/.password-store/subdir -a -o only_subdir.csv
+./pass2bw.py -d ~/.password-store/subdir -a -o only_subdir.csv
+```
+
+Don't forget to start your gpg deamon with the following command (This allows the script to run without asking for password prompt)
+```
+gpg -d ~/.passowrd-store/path/to/any/gpg
 ```
